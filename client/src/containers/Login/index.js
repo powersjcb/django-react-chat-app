@@ -1,6 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { SUBMIT_LOGIN, SUBMIT_LOGOUT } from './constants'
+import PropTypes from 'prop-types'
+
+import AccountForm from '../../components/AccountForm/index'
 
 const attemptLogin = (username, password) => {
   return {
@@ -10,50 +14,34 @@ const attemptLogin = (username, password) => {
   }
 }
 
-const attemptLogout = () => {
-  return {
-    type: SUBMIT_LOGOUT,
-  }
+const attemptLogout = {
+  type: SUBMIT_LOGOUT,
 }
 
-class Login extends React.Component {
-  render() {
-    let usernameInput, passwordInput;
-    if (this.props.loggedIn) {
-      return (
-        <div>
-          <a
-            onClick={(e) => {
-              e.preventDefault()
-              this.props.dispatch(attemptLogout())
-            }}
-          >
-            Log out
-          </a>
-        </div>
-      )
-    }
+const Login = ({loggedIn, submitForm, dispatch}) => {
+  if (loggedIn) {
     return (
-      <form onSubmit={(e) => {
-        e.preventDefault()
-        this.props.dispatch(attemptLogin(
-          usernameInput.value,
-          passwordInput.value
-        ))
-      }}>
-        <label>
-          Username
-          <input type="text" ref={node => usernameInput = node}/>
-        </label>
-        <label>
-          Password
-          <input type="password" ref={node => passwordInput = node} />
-        </label>
-        <span>still failing</span>
-        <button>Login</button>
-      </form>
-    );
+      <button onClick={() => {dispatch(attemptLogout)}}>
+        Log Out
+      </button>
+    )
   }
+  return (
+    <div>
+      <AccountForm
+        submitLabel={"Login"}
+        formLabel={"Login to application"}
+        submitForm={submitForm}>
+      </AccountForm>
+      <Link to="/signup">Signup</Link>
+    </div>
+    )
+}
+
+Login.propTypes = {
+  loggedIn: PropTypes.bool,
+  submitForm: PropTypes.func,
+  dispatch: PropTypes.func,
 }
 
 const mapStateToProps = (state) => {
@@ -64,7 +52,12 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {dispatch}
+  return {
+    submitForm: (u, p) => {
+     dispatch(attemptLogin(u, p))
+    },
+    dispatch,
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

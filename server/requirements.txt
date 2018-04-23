@@ -1,3 +1,5 @@
 django==2.0.4
 djangorestframework==3.8.2
 psycopg2-binary
+coreapi
+djangorestframework-jwt

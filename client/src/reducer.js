@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import login from './containers/Login/reducer'
+import signup from './containers/Signup/reducer'
 
 const app = (state = {}, action) => {
   return state
@@ -7,7 +8,8 @@ const app = (state = {}, action) => {
 
 const globalReducer = combineReducers({
     app,
-    login
+    login,
+    signup,
   }
 )
 

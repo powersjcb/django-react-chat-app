@@ -8,7 +8,7 @@ const initialState = {
   username: '',
   password: '',
   loggedIn: false,
-  accessToken: ''
+  token: ''
 }
 
 const login = (state = initialState, action) => {
@@ -23,7 +23,7 @@ const login = (state = initialState, action) => {
       return {
         username: action.username,
         loggedIn: true,
-        accessToken: action.accessToken,
+        token: action.token,
         password: ''
       }
     case SUBMIT_LOGOUT:

@@ -25,13 +25,13 @@ SECRET_KEY = 'w-*)w%^6#*$a)26kl1je(x#l*7e0ilz*l!@si6m$&hv=^)fkd1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 INSTALLED_APPS = [
     'discordchat',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,8 +77,10 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'discordchat',
-        'USER': 'discordchat',
+        'HOST': os.environ['POSTGRES_HOST'],
+        'PORT': '5432',
+        'NAME': 'postgres',
+        'USER': 'postgres',
         'PASSWORD': '',
     }
 }
@@ -102,6 +104,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
