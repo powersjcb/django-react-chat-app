@@ -10,6 +10,7 @@ import './index.css';
 import globalReducer from './reducer.js';
 import loginSaga from './containers/Login/saga.js'
 import signupSaga from './containers/Signup/saga.js'
+import messengerSaga from './containers/Messenger/saga.js'
 import App from './App';
 
 const sagaMiddleware = createSagaMiddleware()
@@ -29,7 +30,11 @@ const store = createStore(
 )
 
 const sagas = function* () {
-  yield [signupSaga, loginSaga].map(s => fork(s))
+  yield [
+    signupSaga,
+    loginSaga,
+    messengerSaga,
+  ].map(s => fork(s))
 }
 
 sagaMiddleware.run(sagas)

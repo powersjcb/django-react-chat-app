@@ -1,39 +1,47 @@
-const defaultHeaders = {
-  'Content-Type': 'application/json',
+import { call, put } from 'redux-saga/effects'
+import {
+  getRequest,
+  postRequest,
+} from './authapi'
+import {
+  requestFailed,
+  refreshStarted,
+} from './containers/Login/actions'
+import {
+  refreshToken,
+} from './containers/Login/saga'
+
+
+export function authenticateRequest(fn) {
+  return function* wrapper(...args) {
+    try {
+      let response = yield call(fn, ...args)
+      if (response.status === 401 || response.status === 403) {
+        yield put(refreshStarted())
+        yield call(refreshToken)
+        response = yield call(fn, ...args)
+      }
+      return response
+    } catch (error) {
+      yield put(requestFailed(error))
+    }
+  }
 }
 
-async function getRequest(path) {
-  return await fetch(path, {
-    method: 'GET',
-    headers: defaultHeaders,
-    timeout: 10,
-  })
+
+async function getMessages(state) {
+  return await getRequest('/message/', state)
 }
 
-async function postRequest(path, data={}) {
-  return await fetch(path, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: defaultHeaders,
-    timeout: 10,
-  })
-}
-
-async function signup(username, password) {
+async function sendMessage(message, state) {
   return await postRequest(
-    '/user/', {username, password}
-  )
-}
-
-async function login(username, password) {
-  return await postRequest(
-    '/api-token-auth/', {username, password}
+    '/message/',
+    message,
+    state,
   )
 }
 
 export default {
-  getRequest,
-  login,
-  signup,
-  postRequest,
+  getMessages: authenticateRequest(getMessages),
+  sendMessage: authenticateRequest(sendMessage),
 }

@@ -29,13 +29,17 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         )
         return user
 
-class MessageSerializer(serializers.HyperlinkedModelSerializer):
+
+class MessageSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Message
         fields = (
-            'id',
             'text',
+            'nonce',
+            'id',
             'created_at',
             'updated_at',
+            'user',
         )

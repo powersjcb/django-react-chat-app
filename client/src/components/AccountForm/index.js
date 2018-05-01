@@ -1,8 +1,17 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 import PropTypes from "prop-types"
 
-const AccountForm = ({ formLabel, submitLabel, submitForm }) => {
+const AccountForm = ({
+  formLabel,
+  submitLabel,
+  submitForm,
+  loggedIn,
+}) => {
   let usernameInput, passwordInput;
+  if (loggedIn) {
+    return <Redirect to="/" />
+  }
   return (
     <form onSubmit={submitEvent => {
       submitEvent.preventDefault()

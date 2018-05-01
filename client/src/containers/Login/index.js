@@ -9,8 +9,10 @@ import AccountForm from '../../components/AccountForm/index'
 const attemptLogin = (username, password) => {
   return {
     type: SUBMIT_LOGIN,
-    username,
-    password
+    user: {
+      username,
+      password,
+    },
   }
 }
 
@@ -31,7 +33,9 @@ const Login = ({loggedIn, submitForm, dispatch}) => {
       <AccountForm
         submitLabel={"Login"}
         formLabel={"Login to application"}
-        submitForm={submitForm}>
+        submitForm={submitForm}
+        loggedIn={loggedIn}
+      >
       </AccountForm>
       <Link to="/signup">Signup</Link>
     </div>

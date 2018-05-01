@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import { SIGNUP_FAILED, SIGNUP_SUBMIT } from './constants'
-import APIService from '../../api'
+import AuthAPIService from '../../authapi'
 import { SUBMIT_LOGIN } from '../Login/constants'
 
 const postCreationLogin = (username, password) => {
@@ -22,7 +22,7 @@ const signupFailed = (username, msg) => {
 function* signupSubmit (action) {
   try {
     const res = yield call(
-      APIService.signup,
+      AuthAPIService.signup,
       action.username,
       action.password,
     )

@@ -16,5 +16,4 @@ class MessageDetail(generics.ListCreateAPIView):
     serializer_class = MessageSerializer
 
     def perform_create(self, serializer):
-        # todo: override here to set owner, save(user=self.request.user)
-        serializer.save()
+        serializer.save(user=self.request.user)
