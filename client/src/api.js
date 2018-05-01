@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, take, select } from 'redux-saga/effects'
 import {
   getRequest,
   postRequest,
@@ -7,9 +7,10 @@ import {
   requestFailed,
   refreshStarted,
 } from './containers/Login/actions'
+
 import {
-  refreshToken,
-} from './containers/Login/saga'
+  LOGIN_REFRESHED
+} from './containers/Login/constants'
 
 
 export function authenticateRequest(fn) {
@@ -18,7 +19,11 @@ export function authenticateRequest(fn) {
       let response = yield call(fn, ...args)
       if (response.status === 401 || response.status === 403) {
         yield put(refreshStarted())
-        yield call(refreshToken)
+        yield take(LOGIN_REFRESHED)
+        // this section feels like it should be refactored
+        // passing state into these functions but still calling select() is icky
+        // should the effective getState function be passed in instead?
+        args[args.length - 1] = yield select()  // last arg is state
         response = yield call(fn, ...args)
       }
       return response
