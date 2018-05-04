@@ -12,9 +12,11 @@ def forward_update_message_ownership(apps, schema_editor):
     Message = apps.get_model(
         app_label='discordchat',
         model_name='Message')
-    original_user = User.objects.get(username='powersjcb')
-
-    Message.objects.all().update(user=original_user)
+    try:
+        original_user = User.objects.get(username='powersjcb')
+        Message.objects.all().update(user=original_user)
+    except User.DoesNotExist:
+        pass
 
 
 def reverse_update_message_ownership(apps, schema_editor):
