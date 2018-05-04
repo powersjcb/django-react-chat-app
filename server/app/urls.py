@@ -16,15 +16,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest_framework.documentation import include_docs_urls
+from rest_framework import routers
+from django.http import JsonResponse
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.conf.urls import include
 
 from discordchat import views
+from graphene_django.views import GraphQLView
 
+
+router = routers.DefaultRouter()
+router.register(r'channel', views.ChannelViewSet)
 
 urlpatterns = [
+    path('graphql/', GraphQLView.as_view(graphiql=True)),
     path('api/token/',
          TokenObtainPairView.as_view(),
         name='token_obtain_pair'),
@@ -37,6 +45,9 @@ urlpatterns = [
         authentication_classes=[],
         permission_classes=[],
     )),
+    # todo: could refactor to be permit nesting /user/:id/channels/
     path('message/', views.MessageDetail.as_view()),
     path('user/', views.UserRegistration.as_view()),
+    path('membership/', views.MembershipDetail.as_view()),
+    path('', include(router.urls)),
 ]

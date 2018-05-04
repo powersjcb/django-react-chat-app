@@ -7,12 +7,11 @@ const app = (state = {}, action) => {
   return state
 }
 
-const globalReducer = combineReducers({
-    app,
-    login,
-    signup,
-    messenger,
-  }
-)
+const applicationReducers = {
+  app,
+  login,
+  signup,
+  messenger,
+}
 
-export default globalReducer
+export default applicationReducers

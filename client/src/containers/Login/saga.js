@@ -1,8 +1,10 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects'
+import { push } from 'react-router-redux'
 import AuthAPIService from '../../authapi'
 import {
   SUBMIT_LOGIN,
   LOGIN_REFRESH_ACCESS,
+  LOGIN_FAILED,
 } from './constants'
 import {
   loginFailed,
@@ -37,10 +39,15 @@ export function* refreshToken() {
  }
 }
 
+function* redirectToLogin() {
+  yield put(push, '/')
+}
+
 function* saga () {
   return yield [
     takeEvery(SUBMIT_LOGIN, createToken),
-    takeEvery(LOGIN_REFRESH_ACCESS, refreshToken)
+    takeEvery(LOGIN_REFRESH_ACCESS, refreshToken),
+    takeEvery(LOGIN_FAILED, redirectToLogin),
   ]
 }
 

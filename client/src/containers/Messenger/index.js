@@ -1,5 +1,6 @@
 import React from 'react'
 import MessageList from './messagelist'
+import Channel from './../Channel/index'
 import MessageForm from './messageform'
 
 
