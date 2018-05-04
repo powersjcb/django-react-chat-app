@@ -1,7 +1,7 @@
 import graphene
 import graphene_django
 from django.contrib.auth.models import User
-from discordchat.models import Channel, Message, Membership
+from discordchat.models import Channel, Message
 
 
 class MessageType(graphene_django.DjangoObjectType):
@@ -30,14 +30,18 @@ class Query(graphene.ObjectType):
         id=graphene.Int(),
         username=graphene.String()
     )
-
-    def resolve_user(self, info, **kwargs):
-        return User.objects.get(**kwargs)
-
+    messages = graphene.List(MessageType)
     channel = graphene.Field(
         ChannelType,
         id=graphene.Int(),
         name=graphene.String(),
     )
+
+    def resolve_user(self, info, **kwargs):
+        return User.objects.get(**kwargs)
+
     def resolve_channel(self, info, **kwargs):
         return Channel.objects.get(**kwargs)
+
+    def resolve_messages(self, info, **kwargs):
+        return Message.objects.all()

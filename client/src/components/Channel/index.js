@@ -1,11 +1,15 @@
 import React from "react"
-import { Link } from 'react-router-dom'
 import ChannelItem from "./item"
 
 
-export default ({channel}) => (
+export default ({channels}) => (
   <div>
-    <Link to={'channel/' + }/>
+    {channels.map((c) => (
+      <ChannelItem
+        name={c.name}
+        id={c.id}
+      />
+    ))}
   </div>
 )
 

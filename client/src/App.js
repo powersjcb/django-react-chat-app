@@ -19,7 +19,7 @@ const App = ({ history }) => (
           <Link to="/messenger/">Messenger</Link>
           <Route exact path="/" component={Login} />
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/messenger/" component={Messenger} />
+          <Route path="/messenger/" component={Messenger} />
         </div>
       </ConnectedRouter>
     </header>

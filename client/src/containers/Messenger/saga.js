@@ -45,26 +45,45 @@ const messageLoadFailed = (details) => {
 
 function* propagateNewMessage(action) {
   const state = yield select()
-  const res = yield call(
-    APIService.sendMessage,
-    action.message, state
-  )
+  const query = `mutation ($text: String!, $nonce: String!) {
+    createMessage (text: $text, nonce: $nonce) {
+      id
+      nonce
+      text
+      createdAt
+    } 
+  }`
+  const variables = {
+    text: action.message.text,
+    nonce: action.message.nonce,
+   }
+  const res = yield call(APIService.graphqlRequest, query, variables, state)
   const data = yield call([res, res.json])
-  if (res.status !== 201) {
+  if (res.status !== 200 || data.data.errors) {
     yield put(messageSendFailed(data))
   } else {
-    yield put(persistedMessage(data))
+    yield put(persistedMessage(data.data.createMessage))
   }
 }
 
 function* loadMessages() {
   const state = yield select()
-  const res = yield call(APIService.getMessages, state)
+  const query = `query {
+    messages {
+      id
+      nonce
+      text
+      createdAt
+    }
+    
+  }`
+  const variables = {}
+  const res = yield call(APIService.graphqlRequest, query, variables, state)
   const data = yield call([res, res.json])
   if (res.status !== 200) {
     yield put(messageLoadFailed(data))
   } else {
-    yield put(addNewMessages(data))
+    yield put(addNewMessages(data.data.messages))
   }
 
 }

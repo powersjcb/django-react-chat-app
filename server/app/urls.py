@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework.documentation import include_docs_urls
 from rest_framework import routers
-from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -25,14 +25,16 @@ from rest_framework_simplejwt.views import (
 from django.conf.urls import include
 
 from discordchat import views
-from graphene_django.views import GraphQLView
+
+from app.views import DRFAuthenticatedGraphQLView
 
 
 router = routers.DefaultRouter()
 router.register(r'channel', views.ChannelViewSet)
 
+
 urlpatterns = [
-    path('graphql/', GraphQLView.as_view(graphiql=True)),
+    path('graphql/', csrf_exempt(DRFAuthenticatedGraphQLView.as_view(graphiql=True))),
     path('api/token/',
          TokenObtainPairView.as_view(),
         name='token_obtain_pair'),

@@ -1,6 +1,5 @@
 import { call, put, take, select } from 'redux-saga/effects'
 import {
-  getRequest,
   postRequest,
 } from './authapi'
 import {
@@ -33,9 +32,8 @@ export function authenticateRequest(fn) {
   }
 }
 
-
-async function getMessages(state) {
-  return await getRequest('/message/', state)
+async function graphqlRequest(query, variables, state) {
+  return await postRequest('/graphql/', {query, variables}, state)
 }
 
 async function sendMessage(message, state) {
@@ -47,6 +45,6 @@ async function sendMessage(message, state) {
 }
 
 export default {
-  getMessages: authenticateRequest(getMessages),
+  graphqlRequest: authenticateRequest(graphqlRequest),
   sendMessage: authenticateRequest(sendMessage),
 }

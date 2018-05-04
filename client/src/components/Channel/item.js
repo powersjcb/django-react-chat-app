@@ -1,7 +1,18 @@
 import React from "react"
+import { Link } from 'react-router-dom'
+import styled from 'styled-components';
 
-const ChannelItem = ({name}) => (
-  <div>{name}</div>
-)
-
-export default ChannelItem
+export default ({active, name, id}) => {
+  const ActiveLink = styled(Link)`
+    border: 3px black;
+    font-weight: bolt;
+  `
+  const StyledLink = active ? ActiveLink : Link;
+  return (
+    <div>
+      <StyledLink to={`/channel/${id}`}>
+        {name}
+      </StyledLink>
+    </div>
+  )
+}

@@ -19,7 +19,7 @@ const uniqueByField = (list, field) => {
   })
 }
 
-const combineObjectLists = (a, b) => {
+const combineMessageLists = (a, b) => {
   const combinedSorted = a.map((o) => {
     return {...o}
   }).concat(
@@ -27,7 +27,7 @@ const combineObjectLists = (a, b) => {
       return {...o}
     })
   ).sort((a, b) => {
-    return a.created > b.created
+    return a.createdAt > b.createdAt
   })
   return uniqueByField(combinedSorted, 'nonce')
 }
@@ -36,21 +36,21 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case MESSAGES_RECIEVED:
       return {
-        messages: combineObjectLists(
+        messages: combineMessageLists(
           state.messages,
           action.messages
         ),
       }
     case MESSAGES_SEND_NEW:
       return {
-        messages: combineObjectLists(
+        messages: combineMessageLists(
           state.messages,
           [action.message]
         ),
       }
     case MESSAGES_PERSISTED:
       return {
-        messages: combineObjectLists(
+        messages: combineMessageLists(
           state.messages,
           [action.message]
         )
