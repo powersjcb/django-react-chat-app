@@ -19,14 +19,16 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework import routers
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
 from django.conf.urls import include
 
 from discordchat import views
 
-from app.views import DRFAuthenticatedGraphQLView
+from app.views import (
+    DRFAuthenticatedGraphQLView,
+    DetailedTokenObtainPairView,
+)
 
 
 router = routers.DefaultRouter()
@@ -36,7 +38,7 @@ router.register(r'channel', views.ChannelViewSet)
 urlpatterns = [
     path('graphql/', csrf_exempt(DRFAuthenticatedGraphQLView.as_view(graphiql=True))),
     path('api/token/',
-         TokenObtainPairView.as_view(),
+         DetailedTokenObtainPairView.as_view(),
         name='token_obtain_pair'),
     path('api/token/refresh/',
          TokenRefreshView.as_view(),

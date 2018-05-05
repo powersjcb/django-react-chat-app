@@ -1,3 +1,4 @@
+import moment from 'moment'
 import {
   MESSAGES_RECIEVED,
   MESSAGES_PERSISTED,
@@ -8,28 +9,13 @@ const initialState = {
   messages: []
 }
 
-const uniqueByField = (list, field) => {
-  const seen = {}
-  return list.filter((a) => {
-    const seen_yet = a.hasOwnProperty(field) && seen[a[field]]
-    if (a.hasOwnProperty(field)) {
-      seen[a[field]] = true
-    }
-    return !seen_yet
-  })
-}
-
-const combineMessageLists = (a, b) => {
-  const combinedSorted = a.map((o) => {
-    return {...o}
-  }).concat(
-    b.map((o) => {
-      return {...o}
-    })
-  ).sort((a, b) => {
-    return a.createdAt > b.createdAt
-  })
-  return uniqueByField(combinedSorted, 'nonce')
+const combineMessageLists = (old, fresh) => {
+  const freshMessageKeys = fresh.reduce((a, f) => {
+    return a.add(f.nonce)
+  }, new Set())
+  return old.filter(o => {
+    return !freshMessageKeys.has(o.nonce)
+  }).concat(fresh).sort()
 }
 
 const reducer = (state = initialState, action) => {
@@ -52,7 +38,10 @@ const reducer = (state = initialState, action) => {
       return {
         messages: combineMessageLists(
           state.messages,
-          [action.message]
+          [{
+            ...action.message,
+            isPersisted: true
+          }]
         )
       }
     default:

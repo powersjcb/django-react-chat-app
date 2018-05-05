@@ -50,8 +50,8 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.login.loggedIn,
-    username: state.login.username
+    loggedIn: state.login.user.loggedIn,
+    username: state.login.user.username
   }
 }
 

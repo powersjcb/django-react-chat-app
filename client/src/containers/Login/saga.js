@@ -30,7 +30,7 @@ export function* refreshToken() {
    const state = yield select()
    const res = yield call(
      AuthAPIService.refresh,
-     state.login.refresh,
+     state.login.user.refresh,
    )
    const user = yield call([res, 'json'])
    yield put(refreshSuccess(user))

@@ -32,7 +32,7 @@ SignUp.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.login.loggedIn,
+    loggedIn: state.login.user.loggedIn,
   }
 }
 

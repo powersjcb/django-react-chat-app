@@ -13,10 +13,12 @@ import Messenger from './containers/Messenger/index'
 const App = ({ history }) => (
   <div className="App">
     <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
       <ConnectedRouter history={history}>
         <div>
-          <Link to="/messenger/">Messenger</Link>
+          <nav>
+            <Link to="/messenger/">Messenger</Link>
+            <Link to="/logout/">Logout</Link>
+          </nav>
           <Route exact path="/" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route path="/messenger/" component={Messenger} />

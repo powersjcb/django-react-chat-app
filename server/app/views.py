@@ -5,6 +5,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import authentication_classes, permission_classes, api_view
 from rest_framework.settings import api_settings
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenViewBase
+
 
 class DRFAuthenticatedGraphQLView(GraphQLView):
     def parse_body(self, request):
@@ -19,3 +22,15 @@ class DRFAuthenticatedGraphQLView(GraphQLView):
         view = authentication_classes(api_settings.DEFAULT_AUTHENTICATION_CLASSES)(view)
         view = api_view(['GET', 'POST'])(view)
         return view
+
+
+class DetailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    
+    def validate(self, attrs):
+        data = super(DetailTokenObtainPairSerializer, self).validate(attrs)
+        data['id'] = str(self.user.id)
+        return data
+
+
+class DetailedTokenObtainPairView(TokenViewBase):
+    serializer_class = DetailTokenObtainPairSerializer

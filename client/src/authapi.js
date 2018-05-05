@@ -16,8 +16,8 @@ export async function getRequest(path, state={}) {
 
 export async function postRequest(path, data={}, state={}) {
   const headers = {...defaultHeaders}
-  if (state && state.login && state.login.access) {
-    headers['Authorization'] = 'Bearer ' + state.login.access
+  if (state && state.login && state.login.user.access) {
+    headers['Authorization'] = 'Bearer ' + state.login.user.access
   }
   return await fetch(path, {
     method: 'POST',

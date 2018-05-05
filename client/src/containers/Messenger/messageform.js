@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import MessageInput from '../../components/MessageInput/index'
 import { MESSAGES_SEND_NEW } from './constants'
 import uuidv4 from 'uuid/v4'
+import { utcTimestamp } from '../../lib/utils'
 
 class MessageForm extends React.Component {
   constructor(props) {
@@ -24,8 +25,11 @@ class MessageForm extends React.Component {
       type: MESSAGES_SEND_NEW,
       message: {
         text: this.state.messageInput,
-        id: Date.now(), // placeholder until real id comes back
+        id: Date.now().toString(), // placeholder until real id comes back
         nonce: uuidv4(),
+        user_id: this.props.currentUser.id,
+        createdAt: utcTimestamp(),
+        isPersisted: false,
       }
     })
     this.setState(this.defaultState)
@@ -45,7 +49,13 @@ class MessageForm extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.login.user,
+  }
+}
+
 export default connect(
+  mapStateToProps,
   null,
-  null
 )(MessageForm)
