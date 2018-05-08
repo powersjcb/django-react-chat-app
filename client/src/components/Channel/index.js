@@ -6,6 +6,7 @@ import ChannelItem from "./item"
 
 const ChannelIndex = ({channels, width}) => (
   <Box width={width}>
+    CHANNELS
     {channels.map((c) => (
       <ChannelItem
         name={c.name}
