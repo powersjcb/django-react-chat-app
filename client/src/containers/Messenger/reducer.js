@@ -1,4 +1,3 @@
-import moment from 'moment'
 import {
   MESSAGES_RECIEVED,
   MESSAGES_PERSISTED,

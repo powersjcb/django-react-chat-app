@@ -11,7 +11,6 @@ import {
   put,
   takeLatest,
   takeEvery,
-  select,
 } from 'redux-saga/effects'
 import APIService from '../../api'
 
@@ -44,7 +43,6 @@ const messageLoadFailed = (details) => {
 }
 
 function* propagateNewMessage(action) {
-  const state = yield select()
   const query = `mutation ($text: String!, $nonce: String!) {
     createMessage (text: $text, nonce: $nonce) {
       id
@@ -57,7 +55,7 @@ function* propagateNewMessage(action) {
     text: action.message.text,
     nonce: action.message.nonce,
    }
-  const res = yield call(APIService.graphqlRequest, query, variables, state)
+  const res = yield call(APIService.graphqlRequest, query, variables)
   const data = yield call([res, res.json])
   if (res.status !== 200 || data.data.errors) {
     yield put(messageSendFailed(data))
@@ -67,7 +65,6 @@ function* propagateNewMessage(action) {
 }
 
 function* loadMessages() {
-  const state = yield select()
   const query = `query {
     messages {
       id
@@ -78,7 +75,7 @@ function* loadMessages() {
     
   }`
   const variables = {}
-  const res = yield call(APIService.graphqlRequest, query, variables, state)
+  const res = yield call(APIService.graphqlRequest, query, variables)
   const data = yield call([res, res.json])
   if (res.status !== 200) {
     yield put(messageLoadFailed(data))

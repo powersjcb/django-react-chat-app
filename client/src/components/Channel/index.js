@@ -1,15 +1,26 @@
 import React from "react"
+import PropTypes from "prop-types"
+import { Box } from "rebass"
 import ChannelItem from "./item"
 
 
-export default ({channels}) => (
-  <div>
+const ChannelIndex = ({channels, width}) => (
+  <Box width={width}>
     {channels.map((c) => (
       <ChannelItem
         name={c.name}
         id={c.id}
       />
     ))}
-  </div>
+  </Box>
 )
+
+ChannelIndex.propTypes = {
+  channels: PropTypes.arrayOf(
+    PropTypes.object
+  ),
+  width: PropTypes.number,
+}
+
+export default ChannelIndex
 

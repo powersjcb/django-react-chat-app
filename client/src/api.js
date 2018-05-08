@@ -1,4 +1,4 @@
-import { call, put, take, select } from 'redux-saga/effects'
+import { call, put, take } from 'redux-saga/effects'
 import {
   postRequest,
 } from './authapi'
@@ -11,7 +11,6 @@ import {
   LOGIN_REFRESHED
 } from './containers/Login/constants'
 
-
 export function authenticateRequest(fn) {
   return function* wrapper(...args) {
     try {
@@ -22,7 +21,6 @@ export function authenticateRequest(fn) {
         // this section feels like it should be refactored
         // passing state into these functions but still calling select() is icky
         // should the effective getState function be passed in instead?
-        args[args.length - 1] = yield select()  // last arg is state
         response = yield call(fn, ...args)
       }
       return response
@@ -32,15 +30,14 @@ export function authenticateRequest(fn) {
   }
 }
 
-async function graphqlRequest(query, variables, state) {
-  return await postRequest('/graphql/', {query, variables}, state)
+function* graphqlRequest(query, variables) {
+  return yield call(postRequest, '/graphql/', {query, variables})
 }
 
-async function sendMessage(message, state) {
-  return await postRequest(
+function* sendMessage(message) {
+  return yield call(postRequest,
     '/message/',
     message,
-    state,
   )
 }
 

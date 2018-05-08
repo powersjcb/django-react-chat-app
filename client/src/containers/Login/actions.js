@@ -1,9 +1,10 @@
 import {
   LOGIN_FAILED,
-  LOGIN_REFRESH_ACCESS,
   LOGIN_REFRESHED,
+  LOGIN_REFRESH_ACCESS,
   LOGIN_SUCCEEDED,
   REQUEST_FAILED,
+  SUBMIT_LOGOUT,
 } from './constants'
 
 
@@ -11,6 +12,12 @@ export const loginSuccess = (user) => {
   return {
     type: LOGIN_SUCCEEDED,
     user,
+  }
+}
+
+export const attemptLogout = () => {
+  return {
+    type: SUBMIT_LOGOUT,
   }
 }
 

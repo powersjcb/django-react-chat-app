@@ -3,6 +3,7 @@ import {
   SUBMIT_LOGOUT,
   LOGIN_SUCCEEDED,
   LOGIN_REFRESHED,
+  LOGIN_FAILED,
 } from './constants'
 
 const getInitialState = () => {
@@ -58,8 +59,17 @@ const login = (state = getInitialState(), action) => {
           rat: timestamp,
         }
       }
+    case LOGIN_FAILED:
+      window.sessionStorage.clear()
+      return {
+        user: {
+          ...state.user,
+          ...action.user,
+        }
+      }
+
     case SUBMIT_LOGOUT:
-      window.sessionStorage.flush()
+      window.sessionStorage.clear()
       return getInitialState()
     default:
       return state

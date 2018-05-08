@@ -1,25 +1,18 @@
+import { select, call } from 'redux-saga/effects'
+
 const defaultHeaders = {
   'Content-Type': 'application/json',
 }
 
-export async function getRequest(path, state={}) {
+export function* postRequest(path, data={}, callState=select) {
+  const state = yield callState()
   const headers = {...defaultHeaders}
-  if (state && state.login && state.login.access) {
-    headers['Authorization'] = 'Bearer ' + state.login.access
-  }
-  return await fetch(path, {
-    method: 'GET',
-    headers: headers,
-    timeout: 10,
-  })
-}
-
-export async function postRequest(path, data={}, state={}) {
-  const headers = {...defaultHeaders}
+  console.log('HEADERS:')
+  console.log(state)
   if (state && state.login && state.login.user.access) {
     headers['Authorization'] = 'Bearer ' + state.login.user.access
   }
-  return await fetch(path, {
+  return yield call(fetch, path, {
     method: 'POST',
     body: JSON.stringify(data),
     timeout: 10,
@@ -27,27 +20,27 @@ export async function postRequest(path, data={}, state={}) {
   })
 }
 
-async function signup(username, password) {
-  return await postRequest(
+function* signup(username, password) {
+  return yield call(postRequest,
     '/user/', {username, password}
   )
 }
 
-async function token({username, password}) {
+function* token({username, password}) {
   // returns 'access' and 'refresh' token
   const data = {
     username,
     password,
   }
-  return await postRequest('/api/token/', data)
+  return yield call(postRequest, '/api/token/', data)
 }
 
-async function refresh(refreshToken) {
+function* refresh(refreshToken) {
   // returns 'access' token
   const data = {
     refresh: refreshToken,
   }
-  return await postRequest('/api/token/refresh/', data)
+  return yield call(postRequest, '/api/token/refresh/', data)
 }
 
 export default {

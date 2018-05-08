@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { SUBMIT_LOGIN, SUBMIT_LOGOUT } from './constants'
+import { SUBMIT_LOGIN } from './constants'
 import PropTypes from 'prop-types'
 
 import AccountForm from '../../components/AccountForm/index'
@@ -16,18 +15,7 @@ const attemptLogin = (username, password) => {
   }
 }
 
-const attemptLogout = {
-  type: SUBMIT_LOGOUT,
-}
-
-const Login = ({loggedIn, submitForm, dispatch}) => {
-  if (loggedIn) {
-    return (
-      <button onClick={() => {dispatch(attemptLogout)}}>
-        Log Out
-      </button>
-    )
-  }
+const Login = ({loggedIn, submitForm}) => {
   return (
     <div>
       <AccountForm
@@ -37,7 +25,6 @@ const Login = ({loggedIn, submitForm, dispatch}) => {
         loggedIn={loggedIn}
       >
       </AccountForm>
-      <Link to="/signup">Signup</Link>
     </div>
     )
 }
@@ -60,7 +47,6 @@ const mapDispatchToProps = (dispatch) => {
     submitForm: (u, p) => {
      dispatch(attemptLogin(u, p))
     },
-    dispatch,
   }
 }
 

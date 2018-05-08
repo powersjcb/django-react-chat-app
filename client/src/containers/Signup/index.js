@@ -10,8 +10,10 @@ import PropTypes from 'prop-types'
 const createAccount = (username, password) => {
   return {
     type: SIGNUP_SUBMIT,
-    username,
-    password,
+    user: {
+      username,
+      password,
+    }
   }
 }
 
@@ -21,6 +23,7 @@ const SignUp = ({ submitForm }) => (
       formLabel={'Sign up'}
       submitLabel={'Create Account'}
       submitForm={submitForm}
+      signup={true}
     />
     <Link to="/">Login</Link>
   </div>
