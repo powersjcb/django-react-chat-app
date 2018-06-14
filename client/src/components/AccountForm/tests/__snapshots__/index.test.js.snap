@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders login page 1`] = `
+<div
+  className="sc-bdVaJa iFgAQR"
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <h3 />
+    <label
+      className="sc-kgoBCf gNzOsm"
+    >
+      Username
+      <input
+        className="sc-kGXeez cwsHfV"
+        onChange={[Function]}
+        type="text"
+      />
+    </label>
+    <label
+      className="sc-kgoBCf gNzOsm"
+    >
+      Password
+      <input
+        className="sc-kGXeez cwsHfV"
+        onChange={[Function]}
+        type="password"
+      />
+    </label>
+    <input
+      className="sc-kGXeez cwsHfV"
+      type="submit"
+      value={undefined}
+    />
+  </form>
+  <a
+    href="/signup"
+    onClick={[Function]}
+  >
+    Signup for an account
+  </a>
+</div>
+`;
