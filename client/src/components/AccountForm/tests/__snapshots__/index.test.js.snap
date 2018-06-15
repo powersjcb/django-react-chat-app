@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Renders login page 1`] = `
+exports[`Consistently renders the account form 1`] = `
 <div
   className="sc-bdVaJa iFgAQR"
 >
