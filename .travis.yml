@@ -6,8 +6,6 @@ node_js:
   - "10"
 
 install:
-  - ls -a
   - npm -C client install
 script:
-  - ls -a
   - npm -C client test
